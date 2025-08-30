@@ -25,3 +25,15 @@
 - Protected profile view with login_required decorator
 - Switched to MySQL database configuration
 - Added mysqlclient package for MySQL connectivity
+
+## [0.3.0] - 2024-01-XX
+### Added
+- Complete data models: Ingredient, Recipe, RecipeIngredient, UserRecipeHistory, CommunityPost
+- Admin interface with proper list displays, filters, and search functionality
+- Django management command for seeding sample data
+- Sample ingredients across categories (vegetables, proteins, grains, dairy, herbs & spices)
+- Sample recipes from multiple cuisines (Italian, Indian, Ethiopian, Chinese, Mediterranean)
+- Many-to-many relationship between recipes and ingredients with quantities
+- User recipe history tracking with JSON field for selected ingredients
+- Community post model for recipe sharing
+- Created superuser account for admin access
