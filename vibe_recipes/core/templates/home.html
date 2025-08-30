@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Recipe Generator{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto text-center">
+        <h1 class="display-4 mb-4">Welcome to Recipe Generator</h1>
+        <p class="lead mb-4">Create delicious recipes from your available ingredients!</p>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Generate Recipe</h5>
+                        <p class="card-text">Select ingredients and get personalized recipes.</p>
+                        <a href="#" class="btn btn-primary">Start Cooking</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Recipe History</h5>
+                        <p class="card-text">View your previously generated recipes.</p>
+                        <a href="#" class="btn btn-secondary">View History</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Community</h5>
+                        <p class="card-text">Share and discover recipes from others.</p>
+                        <a href="#" class="btn btn-success">Join Community</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

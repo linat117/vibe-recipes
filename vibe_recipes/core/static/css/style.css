@@ -1,0 +1,27 @@
+/* Custom styles for Recipe Generator */
+
+body {
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.card {
+    transition: transform 0.2s;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.display-4 {
+    color: #495057;
+}
+
+.lead {
+    color: #6c757d;
+}
