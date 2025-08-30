@@ -37,3 +37,16 @@
 - User recipe history tracking with JSON field for selected ingredients
 - Community post model for recipe sharing
 - Created superuser account for admin access
+
+## [0.4.0] - 2024-01-XX
+### Added
+- Complete ingredient selection interface with responsive grid layout
+- Search functionality for ingredients with real-time filtering
+- Category-based filtering (vegetables, proteins, grains, dairy, herbs, spices, others)
+- Cuisine selection dropdown with all available cuisine options
+- Interactive ingredient cards with checkboxes and hover effects
+- Real-time selection counter showing number of selected ingredients
+- Form validation ensuring at least one ingredient and cuisine are selected
+- User recipe history tracking for selected ingredients and cuisine preferences
+- Updated navigation to link to generate page
+- Responsive design with Bootstrap 5 styling
