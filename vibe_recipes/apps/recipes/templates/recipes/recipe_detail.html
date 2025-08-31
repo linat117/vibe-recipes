@@ -21,6 +21,9 @@
                             {% if recipe.is_generated %}
                                 <span class="badge bg-success">AI Generated</span>
                             {% endif %}
+                            {% if recipe.image_url %}
+                                <span class="badge bg-info">With Image</span>
+                            {% endif %}
                             <div class="mt-2">
                                 <small class="text-muted">
                                     <i class="bi bi-clock"></i> {{ recipe.cooking_time }} min
@@ -32,14 +35,36 @@
                 </div>
             </div>
 
+            <!-- Recipe Image -->
+            {% if recipe.image_url %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <img src="{{ recipe.image_url }}" class="card-img-top" alt="{{ recipe.title }}" style="max-height: 400px; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
             <div class="row">
                 <!-- Ingredients -->
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0">Ingredients</h5>
+                            <h5 class="mb-0">
+                                Ingredients
+                                {% if recipe.is_generated %}
+                                    <small class="text-muted">(Only your selected ingredients)</small>
+                                {% endif %}
+                            </h5>
                         </div>
                         <div class="card-body">
+                            {% if recipe.is_generated %}
+                                <div class="alert alert-info mb-3">
+                                    <i class="bi bi-info-circle"></i>
+                                    This recipe uses only the ingredients you selected - no additional ingredients needed!
+                                </div>
+                            {% endif %}
                             <ul class="list-unstyled">
                                 {% for recipe_ingredient in recipe_ingredients %}
                                     <li class="mb-2">
@@ -63,9 +88,9 @@
                                     <button class="btn btn-primary" onclick="saveRecipe()">
                                         <i class="bi bi-bookmark"></i> Save Recipe
                                     </button>
-                                    <button class="btn btn-success" onclick="shareRecipe()">
-                                        <i class="bi bi-share"></i> Share Recipe
-                                    </button>
+                                    <a href="{% url 'community:share_recipe' recipe.id %}" class="btn btn-success">
+                                        <i class="bi bi-share"></i> Share to Community
+                                    </a>
                                 {% else %}
                                     <a href="{% url 'accounts:login' %}" class="btn btn-primary">
                                         <i class="bi bi-person"></i> Login to Save

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Share Recipe - Community{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">Share Recipe to Community</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Recipe Preview -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            {% if recipe.image_url %}
+                                <img src="{{ recipe.image_url }}" class="img-fluid rounded" alt="{{ recipe.title }}">
+                            {% else %}
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <h4>{{ recipe.title }}</h4>
+                            <p class="text-muted">{{ recipe.cuisine|title }} Cuisine</p>
+                            {% if recipe.description %}
+                                <p>{{ recipe.description }}</p>
+                            {% endif %}
+                            <div class="mb-2">
+                                {% if recipe.difficulty %}
+                                    <span class="badge bg-secondary">{{ recipe.difficulty|title }}</span>
+                                {% endif %}
+                                {% if recipe.cooking_time %}
+                                    <span class="badge bg-info">{{ recipe.cooking_time }} min</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Share Form -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="description" class="form-label">
+                                <strong>Share your thoughts about this recipe:</strong>
+                            </label>
+                            <textarea class="form-control" id="description" name="description" rows="4" 
+                                      placeholder="Tell the community what you think about this recipe, any modifications you made, or why you love it..." required></textarea>
+                            <div class="form-text">
+                                Share your experience, tips, or why you recommend this recipe to others.
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'recipes:recipe_detail' recipe.id %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to Recipe
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-share"></i> Share to Community
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Community Guidelines -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Community Guidelines</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li>Share recipes you've actually tried and enjoyed</li>
+                        <li>Be respectful and constructive in your descriptions</li>
+                        <li>Include helpful tips or modifications you made</li>
+                        <li>Don't share recipes that violate copyright or are inappropriate</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

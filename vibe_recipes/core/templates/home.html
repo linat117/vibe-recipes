@@ -8,6 +8,13 @@
         <h1 class="display-4 mb-4">Welcome to Recipe Generator</h1>
         <p class="lead mb-4">Create delicious recipes from your available ingredients!</p>
         
+        <!-- Install App Button (hidden by default) -->
+        <div class="mb-4">
+            <button id="install-button" class="btn btn-success btn-lg" style="display: none;">
+                <i class="bi bi-download"></i> Install App
+            </button>
+        </div>
+        
         <div class="row">
             <div class="col-md-4">
                 <div class="card">
@@ -23,7 +30,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Recipe History</h5>
                         <p class="card-text">View your previously generated recipes.</p>
-                        <a href="#" class="btn btn-secondary">View History</a>
+                        <a href="{% url 'recipes:history' %}" class="btn btn-secondary">View History</a>
                     </div>
                 </div>
             </div>
@@ -32,7 +39,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Community</h5>
                         <p class="card-text">Share and discover recipes from others.</p>
-                        <a href="#" class="btn btn-success">Join Community</a>
+                        <a href="{% url 'community:feed' %}" class="btn btn-success">Join Community</a>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 from typing import List, Dict, Optional, Tuple
 from django.db.models import Q, Count
 from apps.recipes.models import Ingredient, Recipe, RecipeIngredient, UserRecipeHistory
+from .spoonacular import get_spoonacular_recipes, create_recipe_from_spoonacular
 
 
 # Substitution dictionary for common ingredient replacements
@@ -98,19 +99,21 @@ def match_recipe(selected_ingredients: List[int], cuisine: Optional[str] = None)
 
 def synthesize_recipe(selected_ingredients: List[int], cuisine: str) -> Recipe:
     """
-    Create a new recipe based on selected ingredients and cuisine.
+    Create a new recipe based on ONLY the selected ingredients and cuisine.
     """
     # Get ingredient names
     ingredients = Ingredient.objects.filter(id__in=selected_ingredients)
     ingredient_names = [ing.name.title() for ing in ingredients]
     
-    # Create title
-    if len(ingredient_names) <= 3:
+    # Create title based on selected ingredients
+    if len(ingredient_names) == 1:
+        title = f"{cuisine.title()} {ingredient_names[0]} Recipe"
+    elif len(ingredient_names) <= 3:
         title = f"{cuisine.title()} {' '.join(ingredient_names)}"
     else:
         # Use key ingredients (first 3) for title
         key_ingredients = ingredient_names[:3]
-        title = f"{cuisine.title()} {' '.join(key_ingredients)} Delight"
+        title = f"{cuisine.title()} {' '.join(key_ingredients)} Medley"
     
     # Generate instructions template
     instructions = generate_instructions(ingredients, cuisine)
@@ -130,7 +133,7 @@ def synthesize_recipe(selected_ingredients: List[int], cuisine: str) -> Recipe:
     recipe = Recipe.objects.create(
         title=title,
         cuisine=cuisine,
-        description=f"A delicious {cuisine} recipe made with fresh ingredients.",
+        description=f"A delicious {cuisine} recipe made with {', '.join(ingredient_names).lower()}.",
         instructions=instructions,
         cooking_time=cooking_time,
         difficulty=difficulty,
@@ -149,7 +152,7 @@ def synthesize_recipe(selected_ingredients: List[int], cuisine: str) -> Recipe:
 
 def generate_instructions(ingredients: List[Ingredient], cuisine: str) -> str:
     """
-    Generate cooking instructions based on ingredients and cuisine.
+    Generate cooking instructions based on ONLY the selected ingredients and cuisine.
     """
     # Group ingredients by category
     categories = {}
@@ -169,26 +172,46 @@ def generate_instructions(ingredients: List[Ingredient], cuisine: str) -> str:
         prep_steps.append(f"Prepare {', '.join(categories['protein'])}")
     if 'grain' in categories:
         prep_steps.append(f"Cook {', '.join(categories['grain'])} according to package directions")
+    if 'dairy' in categories:
+        prep_steps.append(f"Prepare {', '.join(categories['dairy'])}")
+    if 'spice' in categories:
+        prep_steps.append(f"Measure out {', '.join(categories['spice'])}")
+    if 'herb' in categories:
+        prep_steps.append(f"Wash and chop {', '.join(categories['herb'])}")
     
     if prep_steps:
         instructions.append("1. Preparation:\n   " + "\n   ".join(prep_steps))
     
     # Step 2: Cooking base
     base_steps = []
-    if 'vegetable' in categories and ('onion' in categories['vegetable'] or 'garlic' in categories['vegetable']):
-        base_steps.append("Sauté onions and garlic in oil until fragrant")
-    if 'protein' in categories:
-        base_steps.append(f"Cook {categories['protein'][0]} until done")
+    # Only mention oil/butter if we have ingredients that need cooking
+    has_cookable_ingredients = any(cat in categories for cat in ['vegetable', 'protein', 'grain'])
+    
+    if has_cookable_ingredients:
+        if 'vegetable' in categories and any(name in ['onion', 'garlic'] for name in categories['vegetable']):
+            base_steps.append("Heat oil in a pan and sauté onions and garlic until fragrant")
+        elif 'protein' in categories:
+            base_steps.append(f"Cook {categories['protein'][0]} in oil until done")
+        elif 'vegetable' in categories:
+            base_steps.append(f"Sauté {categories['vegetable'][0]} in oil until tender")
+        else:
+            base_steps.append("Heat oil in a pan")
     
     if base_steps:
         instructions.append("2. Cooking:\n   " + "\n   ".join(base_steps))
     
     # Step 3: Combining
     combine_steps = []
-    if 'vegetable' in categories:
+    if 'vegetable' in categories and len(categories['vegetable']) > 1:
+        # If we have multiple vegetables, add them in sequence
+        for veg in categories['vegetable'][1:]:  # Skip the first one if it was already cooked
+            combine_steps.append(f"Add {veg} and cook until tender")
+    elif 'vegetable' in categories and not any(name in ['onion', 'garlic'] for name in categories['vegetable']):
         combine_steps.append(f"Add {', '.join(categories['vegetable'])} and cook until tender")
+    
     if 'dairy' in categories:
         combine_steps.append(f"Stir in {', '.join(categories['dairy'])}")
+    
     if 'spice' in categories:
         combine_steps.append(f"Season with {', '.join(categories['spice'])}")
     
@@ -199,8 +222,8 @@ def generate_instructions(ingredients: List[Ingredient], cuisine: str) -> str:
     finish_steps = []
     if 'herb' in categories:
         finish_steps.append(f"Garnish with {', '.join(categories['herb'])}")
-    finish_steps.append("Serve hot and enjoy!")
     
+    finish_steps.append("Serve hot and enjoy!")
     instructions.append("4. Finishing:\n   " + "\n   ".join(finish_steps))
     
     return "\n\n".join(instructions)
@@ -218,37 +241,55 @@ def generate_recipe(selected_ingredients: List[int], cuisine: str, user=None) ->
         if not cuisine:
             raise ValueError("No cuisine selected")
         
-        # Try to match existing recipe
-        matched_recipe = match_recipe(selected_ingredients, cuisine)
+        # First, try to get recipes from Spoonacular API
+        spoonacular_recipes = get_spoonacular_recipes(selected_ingredients, cuisine)
         
-        if matched_recipe:
-            # Use existing recipe
-            recipe = matched_recipe
-            coverage, matching, missing = get_ingredient_coverage(recipe, selected_ingredients)
-            
-            # Get missing ingredients
-            recipe_ingredients = set(recipe.ingredients.values_list('name', flat=True))
-            selected_names = set(Ingredient.objects.filter(id__in=selected_ingredients).values_list('name', flat=True))
-            missing_ingredients = list(recipe_ingredients - selected_names)
-            
-            # Find substitutions
-            substitutions = find_substitutions(missing_ingredients, list(selected_names))
+        if spoonacular_recipes:
+            # Use the best Spoonacular recipe
+            best_recipe_data = spoonacular_recipes[0]
+            recipe = create_recipe_from_spoonacular(best_recipe_data, selected_ingredients, user)
             
             metadata = {
-                'type': 'matched',
-                'coverage': coverage,
-                'missing_ingredients': missing_ingredients,
-                'substitutions': substitutions
-            }
-        else:
-            # Create new recipe
-            recipe = synthesize_recipe(selected_ingredients, cuisine)
-            metadata = {
-                'type': 'generated',
+                'type': 'spoonacular',
+                'source': best_recipe_data.get('source_name', 'Spoonacular'),
+                'source_url': best_recipe_data.get('source_url', ''),
                 'coverage': 1.0,
                 'missing_ingredients': [],
-                'substitutions': {}
+                'substitutions': {},
+                'available_recipes': len(spoonacular_recipes)
             }
+        else:
+            # Fallback to local recipe matching
+            matched_recipe = match_recipe(selected_ingredients, cuisine)
+            
+            if matched_recipe:
+                # Use existing recipe
+                recipe = matched_recipe
+                coverage, matching, missing = get_ingredient_coverage(recipe, selected_ingredients)
+                
+                # Get missing ingredients
+                recipe_ingredients = set(recipe.ingredients.values_list('name', flat=True))
+                selected_names = set(Ingredient.objects.filter(id__in=selected_ingredients).values_list('name', flat=True))
+                missing_ingredients = list(recipe_ingredients - selected_names)
+                
+                # Find substitutions
+                substitutions = find_substitutions(missing_ingredients, list(selected_names))
+                
+                metadata = {
+                    'type': 'matched',
+                    'coverage': coverage,
+                    'missing_ingredients': missing_ingredients,
+                    'substitutions': substitutions
+                }
+            else:
+                # Create new recipe
+                recipe = synthesize_recipe(selected_ingredients, cuisine)
+                metadata = {
+                    'type': 'generated',
+                    'coverage': 1.0,
+                    'missing_ingredients': [],
+                    'substitutions': {}
+                }
         
         # Save to user history if user is logged in
         if user and user.is_authenticated:

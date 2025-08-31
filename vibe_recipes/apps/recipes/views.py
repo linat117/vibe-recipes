@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 from .models import Ingredient, Recipe, RecipeIngredient, UserRecipeHistory
 from .services.generator import generate_recipe
 
@@ -88,3 +89,35 @@ def recipe_detail_view(request, recipe_id):
     }
     
     return render(request, 'recipes/recipe_detail.html', context)
+
+
+@login_required
+def history_view(request):
+    """Display user's recipe history"""
+    # Get user's recipe history, newest first
+    history_items = UserRecipeHistory.objects.filter(user=request.user).select_related('recipe').order_by('-created_at')
+    
+    # Pagination
+    paginator = Paginator(history_items, 10)  # 10 items per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'page_obj': page_obj,
+        'history_items': page_obj,
+    }
+    
+    return render(request, 'recipes/history.html', context)
+
+
+@login_required
+def delete_history_item(request, history_id):
+    """Delete a history item"""
+    if request.method == 'POST':
+        history_item = get_object_or_404(UserRecipeHistory, id=history_id, user=request.user)
+        recipe_title = history_item.recipe.title
+        history_item.delete()
+        messages.success(request, f'"{recipe_title}" removed from history.')
+        return redirect('recipes:history')
+    
+    return redirect('recipes:history')
