@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Community Debug</title>
+</head>
+<body>
+    <h1>Community Debug</h1>
+    
+    <h2>Debug Info:</h2>
+    <ul>
+        <li>Total Posts: {{ debug_info.total_posts }}</li>
+        <li>User Authenticated: {{ debug_info.user_authenticated }}</li>
+        <li>Post Properties: {{ debug_info.post_properties }}</li>
+    </ul>
+    
+    <h2>Posts:</h2>
+    {% for post in posts %}
+        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+            <h3>{{ post.recipe.title }}</h3>
+            <p>Author: {{ post.user.username }}</p>
+            <p>Description: {{ post.description }}</p>
+            <p>Like Count: {{ post.like_count }}</p>
+            {% if user.is_authenticated %}
+                <p>Is Liked: {{ post.is_liked_by_current_user }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+</body>
+</html>

@@ -4,6 +4,19 @@
 
 {% block content %}
 <div class="container">
+    {% csrf_token %}
+    
+    <!-- Error Display -->
+    {% if error %}
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Error Loading Community Feed</h4>
+            <p><strong>Error Type:</strong> {{ error_type }}</p>
+            <p><strong>Error Message:</strong> {{ error }}</p>
+            <hr>
+            <p class="mb-0">Please try refreshing the page or contact support if the problem persists.</p>
+        </div>
+    {% endif %}
+    
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="animate-fade-in">
@@ -80,6 +93,34 @@
                                     </div>
                                     
                                     <p class="card-text">{{ post.description|truncatewords:20 }}</p>
+                                    
+                                    <!-- Reaction Section -->
+                                    <div class="reaction-section mb-3">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="reaction-stats">
+                                                <span class="text-muted">
+                                                    <i class="bi bi-heart-fill text-danger me-1"></i>
+                                                    <span class="like-count" data-post-id="{{ post.id }}">{{ post.like_count }}</span> likes
+                                                </span>
+                                            </div>
+                                            <div class="reaction-actions">
+                                                {% if user.is_authenticated %}
+                                                    <button class="btn btn-sm reaction-btn {% if post.is_liked_by_current_user %}btn-danger{% else %}btn-outline-danger{% endif %}"  
+                                                            data-post-id="{{ post.id }}" 
+                                                            data-reaction-type="like">
+                                                        <i class="bi {% if post.is_liked_by_current_user %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                                                        <span class="reaction-text">
+                                                            {% if post.is_liked_by_current_user %}Liked{% else %}Like{% endif %}
+                                                        </span>
+                                                    </button>
+                                                {% else %}
+                                                    <a href="{% url 'accounts:login' %}" class="btn btn-outline-danger btn-sm">
+                                                        <i class="bi bi-heart"></i> Like
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-footer bg-transparent">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -164,4 +205,99 @@
         </div>
     </div>
 </div>
+
+<!-- Reaction JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle reaction button clicks
+    document.querySelectorAll('.reaction-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const postId = this.dataset.postId;
+            const reactionType = this.dataset.reactionType;
+            
+            // Show loading state
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="bi bi-arrow-clockwise spin"></i> Loading...';
+            this.disabled = true;
+            
+            // Send AJAX request
+            fetch(`/community/react/${postId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `reaction_type=${reactionType}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update like count
+                    const likeCountElement = document.querySelector(`[data-post-id="${postId}"]`);
+                    if (likeCountElement) {
+                        likeCountElement.textContent = data.like_count;
+                    }
+                    
+                    // Update button state
+                    if (data.is_liked) {
+                        this.classList.remove('btn-outline-danger');
+                        this.classList.add('btn-danger');
+                        this.querySelector('i').className = 'bi bi-heart-fill';
+                        this.querySelector('.reaction-text').textContent = 'Liked';
+                    } else {
+                        this.classList.remove('btn-danger');
+                        this.classList.add('btn-outline-danger');
+                        this.querySelector('i').className = 'bi bi-heart';
+                        this.querySelector('.reaction-text').textContent = 'Like';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Revert button state on error
+                this.innerHTML = originalText;
+            })
+            .finally(() => {
+                this.disabled = false;
+            });
+        });
+    });
+});
+
+// Add spinning animation for loading state
+const style = document.createElement('style');
+style.textContent = `
+    .spin {
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    .reaction-section {
+        border-top: 1px solid rgba(0,0,0,0.1);
+        padding-top: 1rem;
+    }
+    
+    .reaction-btn {
+        transition: all 0.3s ease;
+    }
+    
+    .reaction-btn:hover {
+        transform: scale(1.05);
+    }
+    
+    .like-count {
+        font-weight: 600;
+        color: var(--bs-danger);
+    }
+`;
+document.head.appendChild(style);
+</script>
+
 {% endblock %}

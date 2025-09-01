@@ -50,3 +50,16 @@
 - User recipe history tracking for selected ingredients and cuisine preferences
 - Updated navigation to link to generate page
 - Responsive design with Bootstrap 5 styling
+
+## [0.5.0] - 2024-01-XX
+### Added
+- **Community Post Reactions System** - Users can now like community recipe posts
+- New `PostReaction` model with support for multiple reaction types (like, love, wow, yum)
+- Real-time like counting with AJAX-powered interaction
+- Interactive like buttons that show current state (liked/not liked)
+- Visual feedback with heart icons and color changes
+- Loading states and smooth animations for better UX
+- Mobile-responsive reaction interface
+- CSRF protection for secure reaction handling
+- Database migrations for the new reaction system
+- Comprehensive testing of reaction functionality

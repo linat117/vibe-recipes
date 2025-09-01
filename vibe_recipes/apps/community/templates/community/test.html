@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Community Test</title>
+</head>
+<body>
+    <h1>Community Test</h1>
+    
+    <p><strong>Debug Info:</strong> {{ debug_info }}</p>
+    <p><strong>Post Count:</strong> {{ post_count }}</p>
+    
+    <h2>Posts:</h2>
+    {% if posts %}
+        {% for post in posts %}
+            <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+                <h3>{{ post.recipe.title }}</h3>
+                <p>Author: {{ post.user.username }}</p>
+                <p>Description: {{ post.description }}</p>
+                <p>Recipe ID: {{ post.recipe.id }}</p>
+                <p>User ID: {{ post.user.id }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No posts found!</p>
+    {% endif %}
+    
+    <hr>
+    <p><a href="{% url 'community:feed' %}">Back to Community Feed</a></p>
+</body>
+</html>
