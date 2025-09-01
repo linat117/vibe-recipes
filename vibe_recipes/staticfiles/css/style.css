@@ -1,27 +1,789 @@
-/* Custom styles for Recipe Generator */
+/* Fancy Food-Themed Recipe Generator UI */
+
+:root {
+  /* Dark Mode Colors - Clean Design with Golden Theme */
+  --primary-color: #d2691e;
+  --primary-dark: #a0522d;
+  --primary-light: #cd853f;
+  --secondary-color: #daa520;
+  --secondary-dark: #b8860b;
+  --accent-color: #ffd700;
+  --accent-dark: #daa520;
+  --success-color: #28a745;
+  --success-dark: #1e7e34;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --dark-color: #121212;
+  --light-color: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --border-color: #333333;
+  --steam-color: rgba(255, 255, 255, 0.1);
+  --sizzle-color: #ffd700;
+  
+  /* Light Mode Colors - Clean Design with Golden Theme */
+  --light-primary-color: #d2691e;
+  --light-primary-dark: #a0522d;
+  --light-primary-light: #cd853f;
+  --light-secondary-color: #daa520;
+  --light-secondary-dark: #b8860b;
+  --light-accent-color: #ffd700;
+  --light-accent-dark: #daa520;
+  --light-dark-color: #ffffff;
+  --light-light-color: #f8f9fa;
+  --light-text-primary: #212529;
+  --light-text-secondary: #6c757d;
+  --light-border-color: #dee2e6;
+  --light-steam-color: rgba(0, 0, 0, 0.1);
+  --light-sizzle-color: #ffd700;
+  
+  /* Clean Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.25);
+  --shadow-glow: 0 0 20px rgba(210, 105, 30, 0.2);
+  
+  /* Light Mode Shadows */
+  --light-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --light-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --light-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --light-shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.2);
+  --light-shadow-glow: 0 0 20px rgba(210, 105, 30, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
 
 body {
-    background-color: #f8f9fa;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--dark-color);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow-x: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Light Mode Styles */
+body.light-mode {
+  color: var(--light-text-primary);
+  background: var(--light-dark-color);
+}
+
+/* Animated Background */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Floating Food Particles - Simplified */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(210, 105, 30, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(218, 165, 32, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+body.light-mode::before {
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(210, 105, 30, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(218, 165, 32, 0.03) 0%, transparent 50%);
+}
+
+@keyframes floatParticles {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(180deg); }
+}
+
+/* Clean Navbar Design */
+.navbar {
+  background: var(--light-color) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  padding: 1rem 0;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+body.light-mode .navbar {
+  background: var(--light-light-color) !important;
+  border-bottom: 1px solid var(--light-border-color);
+  box-shadow: var(--light-shadow-sm);
+}
+
+.navbar::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+  animation: steamFlow 2s ease-in-out infinite;
+}
+
+@keyframes steamFlow {
+  0%, 100% { opacity: 0.2; transform: scaleX(0.9); }
+  50% { opacity: 0.8; transform: scaleX(1); }
 }
 
 .navbar-brand {
-    font-weight: bold;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  transition: all 0.3s ease;
 }
 
+body.light-mode .navbar-brand {
+  color: var(--light-primary-color);
+}
+
+.navbar-brand:hover {
+  color: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+body.light-mode .navbar-brand:hover {
+  color: var(--light-secondary-color);
+}
+
+@keyframes brandGlow {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(139, 69, 19, 0.4)); }
+  50% { filter: drop-shadow(0 0 15px rgba(139, 69, 19, 0.8)); }
+}
+
+.navbar-nav .nav-link {
+  font-weight: 500;
+  color: var(--text-primary) !important;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 0.75rem 1rem !important;
+  border-radius: 8px;
+  margin: 0 0.25rem;
+}
+
+body.light-mode .navbar-nav .nav-link {
+  color: var(--light-text-primary) !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--primary-color) !important;
+  background: rgba(210, 105, 30, 0.1);
+  transform: translateY(-1px);
+}
+
+body.light-mode .navbar-nav .nav-link:hover {
+  color: var(--light-primary-color) !important;
+  background: rgba(210, 105, 30, 0.05);
+}
+
+/* Main Content */
+main {
+  padding: 2rem 0;
+  min-height: calc(100vh - 200px);
+  position: relative;
+}
+
+.container {
+  max-width: 1200px;
+}
+
+/* Clean Cards Design */
 .card {
-    transition: transform 0.2s;
-    margin-bottom: 20px;
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  background: var(--light-color);
+  position: relative;
+  border: 1px solid var(--border-color);
+}
+
+body.light-mode .card {
+  background: var(--light-dark-color);
+  border: 1px solid var(--light-border-color);
+  box-shadow: var(--light-shadow-md);
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
 }
 
-.display-4 {
-    color: #495057;
+body.light-mode .card:hover {
+  box-shadow: var(--light-shadow-lg);
 }
 
-.lead {
-    color: #6c757d;
+.card-header {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 1.25rem;
+  font-weight: 600;
+  position: relative;
+}
+
+body.light-mode .card-header {
+  background: var(--light-primary-color);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* Clean Buttons Design */
+.btn {
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+  border: none;
+  position: relative;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: white;
+}
+
+.btn-success {
+  background: var(--success-color);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-success:hover {
+  background: var(--success-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: white;
+}
+
+.btn-outline-primary {
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  background: transparent;
+}
+
+.btn-outline-primary:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+body.light-mode .btn-outline-primary {
+  border-color: var(--light-primary-color);
+  color: var(--light-primary-color);
+}
+
+body.light-mode .btn-outline-primary:hover {
+  background: var(--light-primary-color);
+  color: white;
+}
+
+/* Clean Form Controls */
+.form-control, .form-select {
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+  background: var(--light-color);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+body.light-mode .form-control, body.light-mode .form-select {
+  background: var(--light-dark-color);
+  border: 2px solid var(--light-border-color);
+  color: var(--light-text-primary);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.1);
+  transform: translateY(-1px);
+  background: var(--light-color);
+}
+
+body.light-mode .form-control:focus, body.light-mode .form-select:focus {
+  background: var(--light-dark-color);
+  box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.1);
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+body.light-mode .form-label {
+  color: var(--light-text-primary);
+}
+
+/* Clean Ingredient Cards */
+.ingredient-card {
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background: var(--light-color);
+  position: relative;
+  color: var(--text-primary);
+}
+
+body.light-mode .ingredient-card {
+  background: var(--light-dark-color);
+  border: 2px solid var(--light-border-color);
+  color: var(--light-text-primary);
+}
+
+.ingredient-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+body.light-mode .ingredient-card:hover {
+  box-shadow: var(--light-shadow-md);
+}
+
+.ingredient-card.selected {
+  border-color: var(--primary-color);
+  background: rgba(210, 105, 30, 0.1);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+body.light-mode .ingredient-card.selected {
+  background: rgba(210, 105, 30, 0.05);
+  box-shadow: var(--light-shadow-md);
+}
+
+.ingredient-card.selected::before {
+  content: '✓';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: var(--primary-color);
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: var(--shadow-sm);
+  z-index: 10;
+}
+
+/* Recipe Cards with Cooking Animation */
+.recipe-card {
+  border-radius: 25px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(15px);
+  position: relative;
+}
+
+.recipe-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.recipe-card:hover::after {
+  transform: translateX(100%);
+}
+
+.recipe-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: var(--shadow-xl), 0 0 30px rgba(212, 165, 116, 0.3);
+}
+
+.recipe-card .card-img-top {
+  height: 200px;
+  object-fit: cover;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.recipe-card:hover .card-img-top {
+  transform: scale(1.1);
+}
+
+/* Badges with Glow Effect */
+.badge {
+  border-radius: 12px;
+  font-weight: 700;
+  padding: 0.6rem 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.8rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.badge:hover::before {
+  left: 100%;
+}
+
+.bg-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+  box-shadow: 0 0 10px rgba(230, 126, 34, 0.3);
+}
+
+.bg-success {
+  background: linear-gradient(135deg, var(--success-color), var(--success-dark)) !important;
+  box-shadow: 0 0 10px rgba(39, 174, 96, 0.3);
+}
+
+.bg-info {
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-dark)) !important;
+  box-shadow: 0 0 10px rgba(241, 196, 15, 0.3);
+}
+
+/* Alerts with Steam Effect */
+.alert {
+  border-radius: 15px;
+  border: none;
+  padding: 1.25rem 1.75rem;
+  backdrop-filter: blur(15px);
+  position: relative;
+  overflow: hidden;
+}
+
+.alert::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  animation: steamFlow 6s ease-in-out infinite;
+}
+
+.alert-info {
+  background: rgba(255, 215, 0, 0.1);
+  color: var(--text-primary);
+  border-left: 5px solid var(--accent-color);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+/* Pagination with Glow */
+.pagination .page-link {
+  border-radius: 12px;
+  margin: 0 0.25rem;
+  border: none;
+  color: var(--text-primary);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+}
+
+.pagination .page-link:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md), 0 0 15px rgba(212, 165, 116, 0.3);
+}
+
+.pagination .page-item.active .page-link {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border: none;
+  box-shadow: var(--shadow-lg), 0 0 20px rgba(212, 165, 116, 0.4);
+}
+
+/* Clean Footer Design */
+footer {
+  background: var(--light-color);
+  border-top: 1px solid var(--border-color);
+  margin-top: 3rem;
+  padding: 2rem 0;
+  position: relative;
+}
+
+body.light-mode footer {
+  background: var(--light-light-color);
+  border-top: 1px solid var(--light-border-color);
+}
+
+footer h5 {
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+body.light-mode footer h5 {
+  color: var(--light-primary-color);
+}
+
+footer p, footer small {
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+body.light-mode footer p, body.light-mode footer small {
+  color: var(--light-text-secondary);
+}
+
+/* Enhanced Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: var(--shadow-lg);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-xl), 0 0 10px rgba(139, 69, 19, 0.3);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+@keyframes sizzle {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.02) rotate(1deg); }
+  50% { transform: scale(1.05) rotate(-1deg); }
+  75% { transform: scale(1.02) rotate(1deg); }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-slide-in {
+  animation: slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
+.animate-sizzle {
+  animation: sizzle 0.5s ease-in-out;
+}
+
+/* Loading Spinner with Steam */
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--border-color);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: relative;
+}
+
+.loading-spinner::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 6px;
+  height: 30px;
+  background: var(--steam-color);
+  border-radius: 3px;
+  transform: translateX(-50%);
+  animation: steamRise 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .ingredient-card {
+    padding: 1rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+  box-shadow: 0 0 10px rgba(212, 165, 116, 0.5);
+}
+
+/* Glass Morphism Effects */
+.glass {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(212, 165, 116, 0.1);
+}
+
+/* Gradient Text with Glow */
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(212, 165, 116, 0.3));
+}
+
+/* Floating Action Button with Steam */
+.fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-xl), 0 0 30px rgba(230, 126, 34, 0.4);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  font-size: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.fab::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 8px;
+  height: 40px;
+  background: var(--steam-color);
+  border-radius: 4px;
+  transform: translateX(-50%);
+  animation: steamRise 3s ease-in-out infinite;
+}
+
+.fab:hover {
+  transform: scale(1.15) rotate(5deg);
+  box-shadow: var(--shadow-xl), 0 0 40px rgba(212, 165, 116, 0.6);
+}
+
+/* Hot Food Cooking Animation */
+.cooking-animation {
+  position: relative;
+  overflow: hidden;
+}
+
+.cooking-animation::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 30% 70%, rgba(255, 215, 0, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 70% 30%, rgba(212, 165, 116, 0.2) 0%, transparent 50%);
+  animation: cookingHeat 4s ease-in-out infinite;
+}
+
+@keyframes cookingHeat {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
 }

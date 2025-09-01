@@ -1,49 +1,1130 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Home - Recipe Generator{% endblock %}
+{% block title %}Recipe Generator - Transform Ingredients into Delicious Meals{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-8 mx-auto text-center">
-        <h1 class="display-4 mb-4">Welcome to Recipe Generator</h1>
-        <p class="lead mb-4">Create delicious recipes from your available ingredients!</p>
-        
-        <!-- Install App Button (hidden by default) -->
-        <div class="mb-4">
-            <button id="install-button" class="btn btn-success btn-lg" style="display: none;">
-                <i class="bi bi-download"></i> Install App
-            </button>
+<!-- Hero Section with Parallax -->
+<section class="hero-section">
+    <div class="hero-background">
+        <div class="floating-ingredients">
+            <div class="ingredient-item" style="--delay: 0s; --x: 10%; --y: 20%;">
+                <i class="bi bi-egg-fried"></i>
+            </div>
+            <div class="ingredient-item" style="--delay: 1s; --x: 80%; --y: 30%;">
+                <i class="bi bi-carrot"></i>
+            </div>
+            <div class="ingredient-item" style="--delay: 2s; --x: 20%; --y: 70%;">
+                <i class="bi bi-droplet"></i>
+            </div>
+            <div class="ingredient-item" style="--delay: 3s; --x: 70%; --y: 80%;">
+                <i class="bi bi-flower1"></i>
+            </div>
+            <div class="ingredient-item" style="--delay: 4s; --x: 50%; --y: 10%;">
+                <i class="bi bi-lightning"></i>
+            </div>
         </div>
-        
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Generate Recipe</h5>
-                        <p class="card-text">Select ingredients and get personalized recipes.</p>
-                        <a href="{% url 'recipes:generate' %}" class="btn btn-primary">Start Cooking</a>
+    </div>
+    
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-lg-8 text-center">
+                <div class="hero-content animate-fade-in">
+                    <div class="hero-badge animate-slide-in" style="animation-delay: 0.2s;">
+                        <span class="badge bg-secondary fs-6 px-4 py-2">
+                            <i class="bi bi-star-fill me-2"></i>AI-Powered Recipe Generation
+                        </span>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Recipe History</h5>
-                        <p class="card-text">View your previously generated recipes.</p>
-                        <a href="{% url 'recipes:history' %}" class="btn btn-secondary">View History</a>
+                    
+                    <h1 class="hero-title animate-slide-in" style="animation-delay: 0.4s;">
+                        Transform Your <span class="gradient-text">Ingredients</span><br>
+                        Into <span class="gradient-text">Delicious</span> Recipes
+                    </h1>
+                    
+                    <p class="hero-subtitle animate-slide-in" style="animation-delay: 0.6s;">
+                        Discover the magic of cooking with AI-powered recipe suggestions. 
+                        Simply select your available ingredients and let our intelligent system 
+                        create mouthwatering recipes tailored just for you.
+                    </p>
+                    
+                    <div class="hero-stats animate-slide-in" style="animation-delay: 0.8s;">
+                        <div class="row g-4 justify-content-center">
+                            <div class="col-md-3">
+                                <div class="stat-item">
+                                    <div class="stat-number" data-target="1000">0</div>
+                                    <div class="stat-label">Recipes</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stat-item">
+                                    <div class="stat-number" data-target="500">0</div>
+                                    <div class="stat-label">Ingredients</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stat-item">
+                                    <div class="stat-number" data-target="50">0</div>
+                                    <div class="stat-label">Cuisines</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stat-item">
+                                    <div class="stat-number" data-target="10000">0</div>
+                                    <div class="stat-label">Users</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Community</h5>
-                        <p class="card-text">Share and discover recipes from others.</p>
-                        <a href="{% url 'community:feed' %}" class="btn btn-success">Join Community</a>
+                    
+                    <div class="hero-actions animate-slide-in" style="animation-delay: 1s;">
+                        <a href="{% url 'recipes:generate' %}" class="btn btn-primary btn-lg me-3 animate-pulse">
+                            <i class="bi bi-magic me-2"></i>Start Cooking Now
+                        </a>
+                        <a href="#how-it-works" class="btn btn-outline-light btn-lg">
+                            <i class="bi bi-play-circle me-2"></i>See How It Works
+                        </a>
+                    </div>
+                    
+                    <!-- Install App Button -->
+                    <div class="mt-4 animate-fade-in" style="animation-delay: 1.2s;">
+                        <button id="install-button" class="btn btn-light btn-sm animate-pulse" style="display: none;">
+                            <i class="bi bi-download me-2"></i> Install App
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <div class="scroll-indicator">
+        <div class="scroll-arrow"></div>
+        <span>Scroll to explore</span>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="section-how-it-works">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="section-header text-center mb-5">
+                    <h2 class="section-title gradient-text animate-fade-in">How It Works</h2>
+                    <p class="section-subtitle animate-fade-in" style="animation-delay: 0.2s;">
+                        Three simple steps to create your perfect recipe
+                    </p>
+                </div>
+                
+                <div class="steps-container">
+                    <div class="row g-5">
+                        <div class="col-lg-4 animate-slide-in" style="animation-delay: 0.3s;">
+                            <div class="step-card glass">
+                                <div class="step-number">1</div>
+                                <div class="step-icon">
+                                    <i class="bi bi-basket"></i>
+                                </div>
+                                <h3 class="step-title">Select Ingredients</h3>
+                                <p class="step-description">
+                                    Choose from our extensive database of fresh ingredients. 
+                                    Search, filter, and select what you have available in your kitchen.
+                                </p>
+                                <div class="step-features">
+                                    <div class="feature-item">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                        <span>500+ Ingredients</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                        <span>Smart Search</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                        <span>Category Filtering</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4 animate-slide-in" style="animation-delay: 0.5s;">
+                            <div class="step-card glass">
+                                <div class="step-number">2</div>
+                                <div class="step-icon">
+                                    <i class="bi bi-magic"></i>
+                                </div>
+                                <h3 class="step-title">AI Generates Recipe</h3>
+                                <p class="step-description">
+                                    Our advanced AI analyzes your ingredients and creates 
+                                    personalized recipes with detailed instructions and cooking tips.
+                                </p>
+                                <div class="step-features">
+                                    <div class="feature-item">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                        <span>AI-Powered</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                        <span>Real Images</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                        <span>Smart Matching</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4 animate-slide-in" style="animation-delay: 0.7s;">
+                            <div class="step-card glass">
+                                <div class="step-number">3</div>
+                                <div class="step-icon">
+                                    <i class="bi bi-share"></i>
+                                </div>
+                                <h3 class="step-title">Cook & Share</h3>
+                                <p class="step-description">
+                                    Follow the step-by-step instructions, cook your masterpiece, 
+                                    and share your creations with our community of food lovers.
+                                </p>
+                                <div class="step-features">
+                                    <div class="feature-item">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                        <span>Step-by-Step</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                        <span>Community</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                        <span>Save History</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="section-features">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="section-header text-center mb-5">
+                    <h2 class="section-title gradient-text animate-fade-in">Why Choose Recipe Generator?</h2>
+                    <p class="section-subtitle animate-fade-in" style="animation-delay: 0.2s;">
+                        Experience the future of cooking with our innovative features
+                    </p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-4 animate-slide-in" style="animation-delay: 0.1s;">
+                            <div class="feature-card glass">
+                                <div class="feature-icon">
+                                    <i class="bi bi-lightning-charge"></i>
+                                </div>
+                                <h4>Lightning Fast</h4>
+                                <p>Generate recipes in seconds with our optimized AI algorithms</p>
+                                <div class="feature-highlight">
+                                    <span class="badge bg-success">Under 3 seconds</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4 animate-slide-in" style="animation-delay: 0.2s;">
+                            <div class="feature-card glass">
+                                <div class="feature-icon">
+                                    <i class="bi bi-lightning-charge"></i>
+                                </div>
+                                <h4>AI-Powered</h4>
+                                <p>Advanced machine learning creates personalized recipe suggestions</p>
+                                <div class="feature-highlight">
+                                    <span class="badge bg-success">Smart Matching</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4 animate-slide-in" style="animation-delay: 0.3s;">
+                            <div class="feature-card glass">
+                                <div class="feature-icon">
+                                    <i class="bi bi-phone"></i>
+                                </div>
+                                <h4>Mobile Ready</h4>
+                                <p>Perfect experience on all devices with responsive design</p>
+                                <div class="feature-highlight">
+                                    <span class="badge bg-success">PWA Ready</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4 animate-slide-in" style="animation-delay: 0.4s;">
+                            <div class="feature-card glass">
+                                <div class="feature-icon">
+                                    <i class="bi bi-wifi-off"></i>
+                                </div>
+                                <h4>Offline Support</h4>
+                                <p>Access your saved recipes even without internet connection</p>
+                                <div class="feature-highlight">
+                                    <span class="badge bg-success">Works Offline</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4 animate-slide-in" style="animation-delay: 0.5s;">
+                            <div class="feature-card glass">
+                                <div class="feature-icon">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <h4>Community</h4>
+                                <p>Share recipes and discover amazing dishes from other users</p>
+                                <div class="feature-highlight">
+                                    <span class="badge bg-success">Social Cooking</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4 animate-slide-in" style="animation-delay: 0.6s;">
+                            <div class="feature-card glass">
+                                <div class="feature-icon">
+                                    <i class="bi bi-shield-check"></i>
+                                </div>
+                                <h4>Safe & Secure</h4>
+                                <p>Your data is protected with industry-standard security measures</p>
+                                <div class="feature-highlight">
+                                    <span class="badge bg-success">100% Secure</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Interactive Demo Section -->
+<section class="section-demo">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="section-header text-center mb-5">
+                    <h2 class="section-title gradient-text animate-fade-in">Try It Now</h2>
+                    <p class="section-subtitle animate-fade-in" style="animation-delay: 0.2s;">
+                        Experience the magic of AI-powered recipe generation
+                    </p>
+                </div>
+                
+                <div class="demo-container glass animate-fade-in" style="animation-delay: 0.4s;">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <div class="demo-content">
+                                <h3 class="demo-title">Quick Recipe Preview</h3>
+                                <p class="demo-description">
+                                    Select some ingredients and see how our AI creates a delicious recipe 
+                                    tailored just for you. It's like having a personal chef in your pocket!
+                                </p>
+                                
+                                <div class="demo-ingredients">
+                                    <h5>Popular Ingredients:</h5>
+                                    <div class="ingredient-tags">
+                                        <span class="ingredient-tag" data-ingredient="chicken">Chicken</span>
+                                        <span class="ingredient-tag" data-ingredient="tomato">Tomato</span>
+                                        <span class="ingredient-tag" data-ingredient="onion">Onion</span>
+                                        <span class="ingredient-tag" data-ingredient="garlic">Garlic</span>
+                                        <span class="ingredient-tag" data-ingredient="pasta">Pasta</span>
+                                        <span class="ingredient-tag" data-ingredient="cheese">Cheese</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="demo-actions">
+                                    <a href="{% url 'recipes:generate' %}" class="btn btn-primary btn-lg">
+                                        <i class="bi bi-magic me-2"></i>Start Creating
+                                    </a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-6">
+                            <div class="demo-preview">
+                                <div class="recipe-preview-card glass">
+                                    <div class="preview-header">
+                                        <div class="preview-image">
+                                            <i class="bi bi-egg-fried" style="font-size: 3rem; color: var(--secondary-color);"></i>
+                                        </div>
+                                        <div class="preview-badges">
+                                            <span class="badge bg-success">AI Generated</span>
+                                            <span class="badge bg-warning">Quick & Easy</span>
+                                        </div>
+                                    </div>
+                                    <div class="preview-content">
+                                        <h4 class="preview-title">Scrambled Eggs with Herbs</h4>
+                                        <p class="preview-description">A delicious breakfast made with fresh eggs and aromatic herbs</p>
+                                        <div class="preview-ingredients">
+                                            <div class="ingredient-preview">
+                                                <i class="bi bi-circle-fill" style="color: var(--secondary-color); font-size: 0.5rem;"></i>
+                                                <span>Eggs</span>
+                                            </div>
+                                            <div class="ingredient-preview">
+                                                <i class="bi bi-circle-fill" style="color: var(--secondary-color); font-size: 0.5rem;"></i>
+                                                <span>Butter</span>
+                                            </div>
+                                            <div class="ingredient-preview">
+                                                <i class="bi bi-circle-fill" style="color: var(--secondary-color); font-size: 0.5rem;"></i>
+                                                <span>Fresh Herbs</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- CTA Section -->
+<section class="section-cta">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="cta-content glass animate-fade-in">
+                    <h2 class="cta-title gradient-text">Ready to Start Your Culinary Journey?</h2>
+                    <p class="cta-description">
+                        Join thousands of users who are already creating amazing recipes with their available ingredients. 
+                        Start cooking smarter today!
+                    </p>
+                    
+                    <div class="cta-stats">
+                        <div class="row g-4">
+                            <div class="col-md-3">
+                                <div class="cta-stat">
+                                    <div class="stat-icon">
+                                        <i class="bi bi-people"></i>
+                                    </div>
+                                    <div class="stat-number" data-target="10000">0</div>
+                                    <div class="stat-label">Happy Users</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="cta-stat">
+                                    <div class="stat-icon">
+                                        <i class="bi bi-heart"></i>
+                                    </div>
+                                    <div class="stat-number" data-target="50000">0</div>
+                                    <div class="stat-label">Recipes Created</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="cta-stat">
+                                    <div class="stat-icon">
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <div class="stat-number" data-target="4.9">0</div>
+                                    <div class="stat-label">Average Rating</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="cta-stat">
+                                    <div class="stat-icon">
+                                        <i class="bi bi-clock"></i>
+                                    </div>
+                                    <div class="stat-number" data-target="24">0</div>
+                                    <div class="stat-label">Hours Support</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="cta-actions">
+                        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg me-3">
+                            <i class="bi bi-person-plus me-2"></i>Get Started Free
+                        </a>
+                        <a href="{% url 'recipes:generate' %}" class="btn btn-outline-light btn-lg">
+                            <i class="bi bi-magic me-2"></i>Try Demo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Floating Action Button -->
+<div class="fab" onclick="window.location.href='{% url 'recipes:generate' %}'" title="Generate Recipe">
+    <i class="bi bi-plus-lg"></i>
 </div>
+
+<style>
+/* Hero Section */
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease-in-out infinite;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.floating-ingredients {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.ingredient-item {
+    position: absolute;
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.3);
+    animation: float 3s ease-in-out infinite;
+    animation-delay: var(--delay);
+    left: var(--x);
+    top: var(--y);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+    50% { transform: translateY(-20px) rotate(90deg); opacity: 0.6; }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-badge {
+    margin-bottom: 2rem;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    color: white;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.hero-stats {
+    margin-bottom: 3rem;
+}
+
+.stat-item {
+    text-align: center;
+    color: white;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.hero-actions {
+    margin-bottom: 2rem;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    z-index: 2;
+    animation: bounce 2s infinite;
+}
+
+.scroll-arrow {
+    width: 2px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.7);
+    margin: 0 auto 0.5rem;
+    position: relative;
+}
+
+.scroll-arrow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -3px;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid rgba(255, 255, 255, 0.7);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.7);
+    transform: rotate(45deg);
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+    40% { transform: translateX(-50%) translateY(-8px); }
+    60% { transform: translateX(-50%) translateY(-4px); }
+}
+
+/* Section Styles */
+.section-how-it-works,
+.section-features,
+.section-demo,
+.section-cta {
+    padding: 6rem 0;
+    position: relative;
+}
+
+.section-how-it-works {
+    background: rgba(10, 10, 10, 0.05);
+}
+
+.section-features {
+    background: rgba(255, 107, 53, 0.05);
+}
+
+.section-demo {
+    background: rgba(255, 215, 0, 0.05);
+}
+
+.section-cta {
+    background: linear-gradient(135deg, #ff6b35 0%, #1a1a1a 50%, #0a0a0a 100%);
+    color: white;
+}
+
+.section-header {
+    margin-bottom: 4rem;
+}
+
+.section-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.section-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Step Cards */
+.step-card {
+    padding: 3rem 2rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+}
+
+.step-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: var(--shadow-xl), 0 0 30px rgba(230, 126, 34, 0.3);
+}
+
+.step-number {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.2rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.step-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    animation: pulse 2s infinite;
+}
+
+.step-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+body.light-mode .step-title {
+    color: #000000;
+}
+
+.step-description {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+body.light-mode .step-description {
+    color: #333333;
+}
+
+.step-features {
+    text-align: left;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+body.light-mode .feature-item {
+    color: #333333;
+}
+
+.feature-item i {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+/* Feature Cards */
+.feature-card {
+    padding: 2.5rem 2rem;
+    text-align: center;
+    height: 100%;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: var(--shadow-xl), 0 0 25px rgba(230, 126, 34, 0.2);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    animation: float 4s ease-in-out infinite;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+body.light-mode .feature-icon {
+    color: var(--light-secondary-color);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+body.light-mode .feature-card h4 {
+    color: #000000;
+}
+
+.feature-card p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+body.light-mode .feature-card p {
+    color: #333333;
+}
+
+.feature-highlight {
+    margin-top: auto;
+}
+
+/* Demo Section */
+.demo-container {
+    padding: 3rem;
+    border-radius: 25px;
+}
+
+.demo-content {
+    padding-right: 2rem;
+}
+
+.demo-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+body.light-mode .demo-title {
+    color: #000000;
+}
+
+.demo-description {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+body.light-mode .demo-description {
+    color: #333333;
+}
+
+.demo-ingredients h5 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+body.light-mode .demo-ingredients h5 {
+    color: #000000;
+}
+
+.ingredient-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.ingredient-tag {
+    padding: 0.5rem 1rem;
+    background: rgba(230, 126, 34, 0.1);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.ingredient-tag:hover,
+.ingredient-tag.active {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.demo-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Recipe Preview */
+.recipe-preview-card {
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.recipe-preview-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+}
+
+.preview-header {
+    position: relative;
+    height: 200px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-image {
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.preview-badges {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.preview-content {
+    padding: 2rem;
+}
+
+.preview-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+body.light-mode .preview-title {
+    color: #000000;
+}
+
+.preview-description {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+body.light-mode .preview-description {
+    color: #333333;
+}
+
+.preview-ingredients {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ingredient-preview {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+body.light-mode .ingredient-preview {
+    color: #333333;
+}
+
+.ingredient-preview i {
+    color: var(--primary-color);
+    font-size: 0.5rem;
+}
+
+
+
+/* CTA Section */
+.cta-content {
+    padding: 4rem;
+    border-radius: 25px;
+}
+
+.cta-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.cta-description {
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+    opacity: 0.9;
+}
+
+.cta-stats {
+    margin-bottom: 3rem;
+}
+
+.cta-stat {
+    text-align: center;
+}
+
+.cta-stat .stat-icon {
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.cta-stat .stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 0.25rem;
+}
+
+.cta-stat .stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cta-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .demo-content {
+        padding-right: 0;
+        margin-bottom: 2rem;
+    }
+    
+    .cta-content {
+        padding: 2rem;
+    }
+    
+    .cta-title {
+        font-size: 2rem;
+    }
+    
+    .hero-actions,
+    .demo-actions,
+    .cta-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hero-actions .btn,
+    .demo-actions .btn,
+    .cta-actions .btn {
+        width: 100%;
+        max-width: 300px;
+        margin: 0.5rem 0;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate numbers
+    function animateNumbers() {
+        const numbers = document.querySelectorAll('[data-target]');
+        
+        numbers.forEach(number => {
+            const target = parseFloat(number.getAttribute('data-target'));
+            const increment = target / 100;
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                number.textContent = Math.floor(current);
+            }, 20);
+        });
+    }
+    
+    // Intersection Observer for animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-fade-in');
+                if (entry.target.querySelector('[data-target]')) {
+                    animateNumbers();
+                }
+            }
+        });
+    }, observerOptions);
+    
+    // Observe all sections
+    document.querySelectorAll('section').forEach(section => {
+        observer.observe(section);
+    });
+    
+    // Demo preview functionality
+    const ingredientTags = document.querySelectorAll('.ingredient-tag');
+    const previewTitle = document.querySelector('.preview-title');
+    const previewDescription = document.querySelector('.preview-description');
+    const previewIngredients = document.querySelector('.preview-ingredients');
+    
+    ingredientTags.forEach(tag => {
+        tag.addEventListener('click', function() {
+            this.classList.toggle('active');
+            updatePreview();
+        });
+    });
+    
+    function updatePreview() {
+        const selectedIngredients = document.querySelectorAll('.ingredient-tag.active');
+        
+        if (selectedIngredients.length === 0) {
+            previewTitle.textContent = 'Loading Recipe...';
+            previewDescription.textContent = 'Select ingredients to see a preview';
+            previewIngredients.innerHTML = '<div class="ingredient-preview"><i class="bi bi-circle-fill"></i><span>Select ingredients above</span></div>';
+        } else {
+            const ingredientNames = Array.from(selectedIngredients).map(tag => tag.textContent);
+            previewTitle.textContent = `${ingredientNames[0]} ${ingredientNames[1] || ''} Recipe`;
+            previewDescription.textContent = `A delicious recipe using ${ingredientNames.join(', ')}`;
+            
+            previewIngredients.innerHTML = ingredientNames.map(name => 
+                `<div class="ingredient-preview"><i class="bi bi-circle-fill"></i><span>${name}</span></div>`
+            ).join('');
+        }
+    }
+    
+    // Demo preview button
+    document.getElementById('demo-preview').addEventListener('click', function() {
+        const randomIngredients = ['Chicken', 'Tomato', 'Onion', 'Garlic'];
+        ingredientTags.forEach(tag => tag.classList.remove('active'));
+        
+        randomIngredients.forEach(name => {
+            const tag = document.querySelector(`[data-ingredient="${name.toLowerCase()}"]`);
+            if (tag) {
+                tag.classList.add('active');
+            }
+        });
+        
+        updatePreview();
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+});
+</script>
 {% endblock %}
