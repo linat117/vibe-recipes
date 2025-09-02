@@ -24,8 +24,16 @@ python manage.py migrate --noinput
 echo "👤 Creating superuser..."
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin123') if not User.objects.filter(username='admin').exists() else None" | python manage.py shell
 
-# Load sample data
-echo "🥕 Loading sample data..."
+# Load sample data during build
+echo "🥕 Loading sample data during build..."
 python manage.py load_sample_data
+
+# Verify data was created
+echo "🔍 Verifying data creation..."
+python manage.py shell -c "
+from apps.recipes.models import Ingredient, Recipe
+print(f'✅ Ingredients count: {Ingredient.objects.count()}')
+print(f'✅ Recipes count: {Recipe.objects.count()}')
+"
 
 echo "✅ Build completed successfully!"
