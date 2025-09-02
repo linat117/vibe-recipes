@@ -20,8 +20,12 @@ echo "📁 Collecting static files..."
 cd vibe_recipes
 python manage.py collectstatic --noinput
 
-# Run database migrations (if database is available)
+# Run database migrations
 echo "🗄️ Running database migrations..."
-python manage.py migrate --noinput || echo "⚠️ Database not available yet, migrations will run after deployment"
+python manage.py migrate --noinput
+
+# Create superuser if it doesn't exist (non-interactive)
+echo "👤 Creating superuser..."
+echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin123') if not User.objects.filter(username='admin').exists() else None" | python manage.py shell
 
 echo "✅ Build completed successfully!"
