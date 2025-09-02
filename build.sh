@@ -16,4 +16,12 @@ echo "📁 Collecting static files..."
 cd vibe_recipes
 python manage.py collectstatic --noinput
 
+# Run database migrations during build
+echo "🗄️ Running database migrations..."
+python manage.py migrate --noinput
+
+# Create superuser if it doesn't exist
+echo "👤 Creating superuser..."
+echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin123') if not User.objects.filter(username='admin').exists() else None" | python manage.py shell
+
 echo "✅ Build completed successfully!"
