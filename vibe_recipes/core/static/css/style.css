@@ -125,6 +125,30 @@ body.light-mode .navbar {
   box-shadow: var(--light-shadow-sm);
 }
 
+/* Fix hamburger menu icon visibility in dark mode */
+.navbar-toggler {
+  border: 2px solid var(--text-primary);
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+body.light-mode .navbar-toggler {
+  border-color: var(--light-text-primary);
+}
+
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.1);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+body.light-mode .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23212529' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
 .navbar::after {
   content: '';
   position: absolute;
@@ -142,23 +166,26 @@ body.light-mode .navbar {
 }
 
 .navbar-brand {
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: var(--primary-color);
+  font-weight: 900;
+  font-size: 1.8rem;
+  color: #d2691e;
   transition: all 0.3s ease;
+  text-decoration: none;
+  letter-spacing: -1px;
 }
 
 body.light-mode .navbar-brand {
-  color: var(--light-primary-color);
+  color: #d2691e;
 }
 
 .navbar-brand:hover {
-  color: var(--secondary-color);
+  color: #a0522d;
   transform: scale(1.05);
+  text-decoration: none;
 }
 
 body.light-mode .navbar-brand:hover {
-  color: var(--light-secondary-color);
+  color: #a0522d;
 }
 
 @keyframes brandGlow {
@@ -329,11 +356,13 @@ body.light-mode .form-control, body.light-mode .form-select {
   box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.1);
   transform: translateY(-1px);
   background: var(--light-color);
+  color: var(--text-primary);
 }
 
 body.light-mode .form-control:focus, body.light-mode .form-select:focus {
   background: var(--light-dark-color);
   box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.1);
+  color: var(--light-text-primary);
 }
 
 .form-label {
@@ -363,6 +392,14 @@ body.light-mode .ingredient-card {
   background: var(--light-dark-color);
   border: 2px solid var(--light-border-color);
   color: var(--light-text-primary);
+}
+
+/* Ensure all text in ingredient cards is visible */
+.ingredient-card h5,
+.ingredient-card p,
+.ingredient-card span,
+.ingredient-card div {
+  color: inherit;
 }
 
 .ingredient-card:hover {
@@ -414,6 +451,11 @@ body.light-mode .ingredient-card.selected {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(15px);
   position: relative;
+  color: var(--text-primary);
+}
+
+body.light-mode .recipe-card {
+  color: var(--light-text-primary);
 }
 
 .recipe-card::after {
@@ -518,6 +560,15 @@ body.light-mode .ingredient-card.selected {
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
 }
 
+/* Ensure all alert text is visible */
+.alert {
+  color: var(--text-primary);
+}
+
+body.light-mode .alert {
+  color: var(--light-text-primary);
+}
+
 /* Pagination with Glow */
 .pagination .page-link {
   border-radius: 12px;
@@ -527,6 +578,12 @@ body.light-mode .ingredient-card.selected {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 600;
   padding: 0.75rem 1rem;
+  background: var(--light-color);
+}
+
+body.light-mode .pagination .page-link {
+  background: var(--light-dark-color);
+  color: var(--light-text-primary);
 }
 
 .pagination .page-link:hover {
@@ -683,6 +740,25 @@ body.light-mode footer p, body.light-mode footer small {
   .navbar-brand {
     font-size: 1.25rem;
   }
+}
+
+/* Ensure all text elements have proper visibility */
+h1, h2, h3, h4, h5, h6, p, span, div, label, small {
+  color: var(--text-primary);
+}
+
+body.light-mode h1, 
+body.light-mode h2, 
+body.light-mode h3, 
+body.light-mode h4, 
+body.light-mode h5, 
+body.light-mode h6, 
+body.light-mode p, 
+body.light-mode span, 
+body.light-mode div, 
+body.light-mode label, 
+body.light-mode small {
+  color: var(--light-text-primary);
 }
 
 /* Custom Scrollbar */

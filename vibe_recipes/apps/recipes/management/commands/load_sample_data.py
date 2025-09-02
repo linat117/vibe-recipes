@@ -7,24 +7,63 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write('🚀 Loading sample data...')
         
-        # Create sample ingredients
+        # Create sample ingredients with categories
         ingredients_data = [
-            'Chicken', 'Beef', 'Pork', 'Fish', 'Shrimp', 'Eggs', 'Milk', 'Cheese',
-            'Onion', 'Garlic', 'Tomato', 'Bell Pepper', 'Carrot', 'Broccoli', 'Spinach',
-            'Rice', 'Pasta', 'Bread', 'Potato', 'Sweet Potato', 'Mushroom', 'Lemon',
-            'Olive Oil', 'Butter', 'Salt', 'Black Pepper', 'Basil', 'Oregano', 'Thyme',
-            'Chili Powder', 'Cumin', 'Paprika', 'Ginger', 'Cinnamon', 'Vanilla',
-            'Honey', 'Sugar', 'Flour', 'Baking Powder', 'Baking Soda', 'Chocolate',
-            'Nuts', 'Seeds', 'Avocado', 'Cucumber', 'Lettuce', 'Cabbage', 'Corn',
-            'Peas', 'Beans', 'Lentils', 'Quinoa', 'Oats', 'Banana', 'Apple', 'Orange',
-            'Soy Sauce', 'Vinegar', 'Mustard', 'Ketchup', 'Mayonnaise', 'Hot Sauce',
-            'Coconut Milk'
+            # Meat & Protein
+            ('Chicken', 'meat'), ('Beef', 'meat'), ('Pork', 'meat'), ('Fish', 'meat'), 
+            ('Shrimp', 'meat'), ('Eggs', 'protein'),
+            
+            # Dairy
+            ('Milk', 'dairy'), ('Cheese', 'dairy'), ('Butter', 'dairy'),
+            
+            # Vegetables
+            ('Onion', 'vegetable'), ('Garlic', 'vegetable'), ('Tomato', 'vegetable'), 
+            ('Bell Pepper', 'vegetable'), ('Carrot', 'vegetable'), ('Broccoli', 'vegetable'), 
+            ('Spinach', 'vegetable'), ('Potato', 'vegetable'), ('Sweet Potato', 'vegetable'), 
+            ('Mushroom', 'vegetable'), ('Avocado', 'vegetable'), ('Cucumber', 'vegetable'), 
+            ('Lettuce', 'vegetable'), ('Cabbage', 'vegetable'), ('Corn', 'vegetable'),
+            
+            # Grains & Starches
+            ('Rice', 'grain'), ('Pasta', 'grain'), ('Bread', 'grain'), ('Quinoa', 'grain'), 
+            ('Oats', 'grain'), ('Beans', 'grain'), ('Lentils', 'grain'),
+            
+            # Fruits
+            ('Lemon', 'fruit'), ('Banana', 'fruit'), ('Apple', 'fruit'), ('Orange', 'fruit'),
+            
+            # Oils & Fats
+            ('Olive Oil', 'oil'),
+            
+            # Seasonings & Spices
+            ('Salt', 'seasoning'), ('Black Pepper', 'seasoning'), ('Basil', 'herb'), 
+            ('Oregano', 'herb'), ('Thyme', 'herb'), ('Chili Powder', 'spice'), 
+            ('Cumin', 'spice'), ('Paprika', 'spice'), ('Ginger', 'spice'), 
+            ('Cinnamon', 'spice'), ('Vanilla', 'flavoring'),
+            
+            # Sweeteners
+            ('Honey', 'sweetener'), ('Sugar', 'sweetener'),
+            
+            # Baking
+            ('Flour', 'baking'), ('Baking Powder', 'baking'), ('Baking Soda', 'baking'),
+            
+            # Other
+            ('Chocolate', 'other'), ('Nuts', 'other'), ('Seeds', 'other'), 
+            ('Peas', 'vegetable'), ('Soy Sauce', 'condiment'), ('Vinegar', 'condiment'), 
+            ('Mustard', 'condiment'), ('Ketchup', 'condiment'), ('Mayonnaise', 'condiment'), 
+            ('Hot Sauce', 'condiment'), ('Coconut Milk', 'other')
         ]
         
-        for ingredient_name in ingredients_data:
-            ingredient, created = Ingredient.objects.get_or_create(name=ingredient_name)
+        for ingredient_name, category in ingredients_data:
+            ingredient, created = Ingredient.objects.get_or_create(
+                name=ingredient_name,
+                defaults={'category': category}
+            )
             if created:
-                self.stdout.write(f'✅ Created ingredient: {ingredient_name}')
+                self.stdout.write(f'✅ Created ingredient: {ingredient_name} ({category})')
+            else:
+                # Update existing ingredient with category
+                ingredient.category = category
+                ingredient.save()
+                self.stdout.write(f'🔄 Updated ingredient: {ingredient_name} ({category})')
         
         # Create sample recipes
         sample_recipes = [
@@ -90,5 +129,12 @@ class Command(BaseCommand):
                 self.stdout.write(f'✅ Created recipe: {recipe_data["title"]}')
         
         self.stdout.write(self.style.SUCCESS('🎉 Sample data loaded successfully!'))
-        self.stdout.write(f'📊 Created {Ingredient.objects.count()} ingredients')
+        self.stdout.write(f'📊 Created {Ingredient.objects.count()} ingredients with categories')
         self.stdout.write(f'📊 Created {Recipe.objects.count()} recipes')
+        
+        # Show category breakdown
+        from django.db.models import Count
+        category_counts = Ingredient.objects.values('category').annotate(count=Count('id')).order_by('category')
+        self.stdout.write('📊 Category breakdown:')
+        for cat in category_counts:
+            self.stdout.write(f'   {cat["category"]}: {cat["count"]} ingredients')
