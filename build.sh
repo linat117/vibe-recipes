@@ -9,6 +9,7 @@ pip install -r requirements.txt
 
 # Collect static files
 echo "📁 Collecting static files..."
+cd vibe_recipes
 python manage.py collectstatic --noinput
 
 # Run database migrations (if database is available)
