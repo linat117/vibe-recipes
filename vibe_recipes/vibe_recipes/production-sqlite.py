@@ -22,10 +22,7 @@ ALLOWED_HOSTS = [
 
 # Database - Use SQLite for production (no compilation issues)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default= "sqlite3://db.sqlite3")
 }
 
 # Security settings for production
