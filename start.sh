@@ -6,8 +6,9 @@ echo "🚀 Starting Recipe Generator..."
 # Change to the Django project directory
 cd vibe_recipes
 
-# Ensure gunicorn is available
-pip install gunicorn
+# Activate the virtual environment
+echo "🔧 Activating virtual environment..."
+source ../.venv/bin/activate
 
 # Start the application
 echo "🌐 Starting gunicorn server..."

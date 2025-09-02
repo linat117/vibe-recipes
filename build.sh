@@ -11,6 +11,10 @@ pip install -r requirements.txt
 echo "🔧 Installing gunicorn..."
 pip install gunicorn
 
+# Make start script executable
+echo "🔧 Making start script executable..."
+chmod +x ../start.sh
+
 # Collect static files
 echo "📁 Collecting static files..."
 cd vibe_recipes
