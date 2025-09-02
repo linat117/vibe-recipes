@@ -10,6 +10,10 @@ cd vibe_recipes
 echo "🔧 Activating virtual environment..."
 source ../.venv/bin/activate
 
+# Wait for database to be ready
+echo "⏳ Waiting for database to be ready..."
+sleep 5
+
 # Run migrations if needed
 echo "🗄️ Checking and running migrations..."
 python manage.py migrate --noinput

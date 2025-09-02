@@ -20,6 +20,10 @@ echo "📁 Collecting static files..."
 cd vibe_recipes
 python manage.py collectstatic --noinput
 
+# Wait for database to be ready
+echo "⏳ Waiting for database to be ready..."
+sleep 10
+
 # Run database migrations
 echo "🗄️ Running database migrations..."
 python manage.py migrate --noinput
