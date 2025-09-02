@@ -491,13 +491,20 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <style>
-/* Hero Section */
+/* Hero Section - Consistent colors for both themes */
 .hero-section {
     position: relative;
     min-height: 100vh;
     display: flex;
     align-items: center;
     overflow: hidden;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease-in-out infinite;
+}
+
+/* Keep hero section dark in both themes */
+body.light-mode .hero-section {
     background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
     background-size: 200% 200%;
     animation: gradientShift 4s ease-in-out infinite;
@@ -547,15 +554,23 @@ document.addEventListener('DOMContentLoaded', function() {
     font-weight: 800;
     line-height: 1.2;
     margin-bottom: 1.5rem;
-    color: white;
+    color: white !important; /* Force white color in both themes */
     text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.light-mode .hero-title {
+    color: white !important; /* Keep white in light mode too */
 }
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.9) !important; /* Force white with opacity */
     margin-bottom: 3rem;
     line-height: 1.6;
+}
+
+body.light-mode .hero-subtitle {
+    color: rgba(255, 255, 255, 0.9) !important; /* Keep same color in light mode */
 }
 
 .hero-stats {
@@ -564,7 +579,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .stat-item {
     text-align: center;
-    color: white;
+    color: white !important; /* Force white color */
+}
+
+body.light-mode .stat-item {
+    color: white !important; /* Keep white in light mode */
 }
 
 .stat-number {
@@ -579,6 +598,11 @@ document.addEventListener('DOMContentLoaded', function() {
     opacity: 0.8;
     text-transform: uppercase;
     letter-spacing: 1px;
+    color: white !important; /* Force white color */
+}
+
+body.light-mode .stat-label {
+    color: white !important; /* Keep white in light mode */
 }
 
 .hero-actions {
