@@ -19,6 +19,7 @@ ALLOWED_HOSTS = [
     '.railway.app',  # For Railway deployment
     '.vercel.app',   # For Vercel deployment
 ]
+SPOONACULAR_API_KEY = os.environ.get("SPOONACULAR_API_KEY")
 
 # Database - Use PostgreSQL with psycopg3
 DATABASES = {
