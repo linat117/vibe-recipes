@@ -1,5 +1,5 @@
 """
-Production settings for vibe_recipes project.
+Production settings for vibe_recipes project using SQLite.
 """
 
 import os
@@ -20,18 +20,11 @@ ALLOWED_HOSTS = [
     '.vercel.app',   # For Vercel deployment
 ]
 
-# Database - Use PostgreSQL with psycopg3
+# Database - Use SQLite for production (no compilation issues)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
-        'OPTIONS': {
-            'client_encoding': 'UTF8',
-        },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
