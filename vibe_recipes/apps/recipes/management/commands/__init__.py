@@ -1,1 +1,1 @@
-# Commands package for recipes app
+# Commands package

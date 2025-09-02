@@ -1,1 +1,1 @@
-# Management package for recipes app
+# Management commands package

@@ -24,4 +24,8 @@ python manage.py migrate --noinput
 echo "👤 Creating superuser..."
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin123') if not User.objects.filter(username='admin').exists() else None" | python manage.py shell
 
+# Load sample data
+echo "🥕 Loading sample data..."
+python manage.py load_sample_data
+
 echo "✅ Build completed successfully!"
