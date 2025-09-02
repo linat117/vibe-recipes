@@ -27,6 +27,8 @@ DATABASES = {
     }
 }
 SPOONACULAR_API_KEY = os.environ.get('SPOONACULAR_API_KEY', '62d25049b6f44ff399eddc4d0303ec51')
+SPOONACULAR_BASE_URL = os.environ.get('SPOONACULAR_BASE_URL', 'https://api.spoonacular.com')
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 STATIC_URL = '/static/'

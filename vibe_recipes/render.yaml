@@ -16,3 +16,5 @@ services:
         value: vibe_recipes.production-sqlite
       - key: SPOONACULAR_API_KEY
         value: 62d25049b6f44ff399eddc4d0303ec51
+      - key: SPOONACULAR_BASE_URL
+        value: https://api.spoonacular.com
