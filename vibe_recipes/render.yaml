@@ -1,35 +1,18 @@
 services:
   - type: web
-    name: recipe-generator
+    name: vibe-recipes
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    buildCommand: pip install -r requirements.txt
     startCommand: gunicorn vibe_recipes.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0
-      - key: DJANGO_SETTINGS_MODULE
-        value: vibe_recipes.production
-      - key: DEBUG
-        value: False
+        value: 3.9.16
       - key: SECRET_KEY
         generateValue: true
-      - key: ALLOWED_HOST
-        value: recipe-generator.onrender.com
+      - key: DEBUG
+        value: False
+      - key: DJANGO_SETTINGS_MODULE
+        value: vibe_recipes.production-sqlite
       - key: SPOONACULAR_API_KEY
         value: 62d25049b6f44ff399eddc4d0303ec51
-      - key: DB_NAME
-        sync: false
-      - key: DB_USER
-        sync: false
-      - key: DB_PASSWORD
-        sync: false
-      - key: DB_HOST
-        sync: false
-      - key: DB_PORT
-        value: 3306
-
-  - type: mysql
-    name: recipe-generator-db
-    plan: free
-    ipAllowList: []
