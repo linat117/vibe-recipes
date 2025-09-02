@@ -35,7 +35,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = [
     BASE_DIR / 'core' / 'static',
-    BASE_DIR / 'staticfiles',
+    # Only include source directories, not the destination
 ]
 
 # Media files
